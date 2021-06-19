@@ -28,21 +28,25 @@ for number in range(r['lastPage']+1):
         text_file.write("\n")
         text_file.close()
 with open("dwnldurl.txt", "r") as a_file:
-  for line in a_file:
-    stripped_line = line.strip()
-    r3 = requests.get(ohshapes + stripped_line)
-    url4 = 'http://ohshapes.com/api/maps/detail/'
-    r4 = requests.get(url4 + str(stripped_line.split("/")[2])).json()
-    name = r4['key'] + ' (' + re.sub('[^\w\-_\. ]', '',r4['metadata']['songName']).strip() + ' - ' + re.sub('[^\w\-_\. ]', '',r4['metadata']['levelAuthorName']).strip() + ')'
-    try:
-        print('Downloading ' + name)
-        open(name + '.zip', 'xb').write(r3.content)
-        print('Extracting ' + name + '.zip')
-        os.mkdir(os.getcwd() + '\\' + name + '\\')
-        zip = zipfile.ZipFile(name + '.zip')
-        zip.extractall(os.getcwd() + '\\' + name + '\\')
-        zip.close()
-        os.remove(name + '.zip')
-    except FileExistsError:
-        print('File already exists!')
-        os.remove(name + '.zip')
+    for line in a_file:
+        stripped_line = line.strip()
+        url4 = 'http://ohshapes.com/api/maps/detail/'
+        r4 = requests.get(url4 + str(stripped_line.split("/")[2])).json()
+        name = r4['key'] + ' (' + re.sub('[^\w\-_\. ]', '',r4['metadata']['songName']).strip() + ' - ' + re.sub('[^\w\-_\. ]', '',r4['metadata']['levelAuthorName']).strip() + ')'
+        if os.path.isdir(os.getcwd() + '\\' + name + '\\'):
+            print(name + ' already exists')
+        else:
+            try:
+                r3 = requests.get(ohshapes + stripped_line)
+                print('Downloading ' + name)
+                open(name + '.zip', 'xb').write(r3.content)
+                print('Extracting ' + name + '.zip')
+                os.mkdir(os.getcwd() + '\\' + name + '\\')
+                zip = zipfile.ZipFile(name + '.zip')
+                zip.extractall(os.getcwd() + '\\' + name + '\\')
+                zip.close()
+                os.remove(name + '.zip')
+            except FileExistsError:
+                print('File already exists!')
+                os.remove(name + '.zip')
+    input("Press any key to exit...")
