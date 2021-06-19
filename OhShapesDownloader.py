@@ -33,7 +33,7 @@ with open("dwnldurl.txt", "r") as a_file:
     r3 = requests.get(ohshapes + stripped_line)
     url4 = 'http://ohshapes.com/api/maps/detail/'
     r4 = requests.get(url4 + str(stripped_line.split("/")[2])).json()
-    name = r4['key'] + ' - ' + re.sub('[^\w\-_\. ]', '',r4['metadata']['levelAuthorName']).strip() + ' - ' + re.sub('[^\w\-_\. ]', '',r4['metadata']['songName']).strip()
+    name = r4['key'] + ' (' + re.sub('[^\w\-_\. ]', '',r4['metadata']['songName']).strip() + ' - ' + re.sub('[^\w\-_\. ]', '',r4['metadata']['levelAuthorName']).strip() + ')'
     try:
         print('Downloading ' + name)
         open(name + '.zip', 'xb').write(r3.content)
