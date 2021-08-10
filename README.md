@@ -1,2 +1,2 @@
 # OhShapesDownloader
-Downloads and extracts from ohshapes.com
+Downloads and extracts from ohshapes.com using python
